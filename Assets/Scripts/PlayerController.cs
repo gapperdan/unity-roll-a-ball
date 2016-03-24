@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;
 	public float speed = 250;
 	public Text countText;
+	public Text winText;
 	private int count;
 
 	private float speedScale;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour {
 		speedScale = speed * Time.deltaTime;
 		count = 0;
 		SetCountText ();
+		winText.text = "";
 	}
 
 	void FixedUpdate() {
@@ -36,6 +38,9 @@ public class PlayerController : MonoBehaviour {
 
 	void SetCountText() {
 		countText.text = "Count: " + count.ToString ();
+		if (count >= 12) {
+			winText.text = "You Win!";
+		}
 	}
 
 }
