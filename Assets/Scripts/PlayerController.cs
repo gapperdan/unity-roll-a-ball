@@ -3,12 +3,16 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
+	[SerializeField] private AudioSource soundSource;
+	[SerializeField] private AudioClip collectPickupSound;
+	[SerializeField] private AudioClip victorySound;
 
 	private Rigidbody rb;
 	public float speed = 250;
 	public Text countText;
 	public Text winText;
 	private int count;
+	private bool gameOver;
 
 	private float speedScale;
 
@@ -18,6 +22,7 @@ public class PlayerController : MonoBehaviour {
 		count = 0;
 		SetCountText ();
 		winText.text = "";
+		gameOver = false;
 	}
 
 	void FixedUpdate() {
@@ -31,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.CompareTag ("Pick Up")) {
 			other.gameObject.SetActive (false);
+			soundSource.PlayOneShot (collectPickupSound);
 			count = count + 1;
 			SetCountText ();
 		}
@@ -40,6 +46,10 @@ public class PlayerController : MonoBehaviour {
 		countText.text = "Count: " + count.ToString ();
 		if (count >= 12) {
 			winText.text = "You Win!";
+			if (!gameOver) {
+				soundSource.PlayOneShot (victorySound);
+				gameOver = true;
+			}
 		}
 	}
 
